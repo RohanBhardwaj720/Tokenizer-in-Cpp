@@ -23,8 +23,8 @@ std::string convertBytesToString(const std::vector<int>& utf8Bytes) {
     return utf8Str;
 }
 
-std:: map<int,std:: map<int,int> > BPE(std:: vector<int> &compressed,int n_merges){
-    std:: map<int,std:: map<int,int> > merges;
+std:: map<int,std:: pair<int,int> > BPE(std:: vector<int> &compressed,int n_merges){
+    std:: map<int,std:: pair<int,int> > merges;
     int val = 256;
 
     while(n_merges--){
@@ -36,10 +36,11 @@ std:: map<int,std:: map<int,int> > BPE(std:: vector<int> &compressed,int n_merge
             count_pairs[compressed[i]][compressed[i+1]]++;
             if(max_count<count_pairs[compressed[i]][compressed[i+1]]){
                 max_pair = std:: make_pair(compressed[i],compressed[i+1]);
+                max_count = count_pairs[compressed[i]][compressed[i+1]];
             }
         }
         // now max_pair is merged and added into vocabulary 
-        merges[max_pair.first][max_pair.second] = val;
+        merges[val]= std:: make_pair(max_pair.first,max_pair.second);
 
         std:: vector<int> temp;
         for(int i=0;i<compressed.size();){
@@ -56,6 +57,31 @@ std:: map<int,std:: map<int,int> > BPE(std:: vector<int> &compressed,int n_merge
     }
     return merges;
 }
+
+std::vector<int> decode(const std::vector<int>& encoded, const std::map<int, std::pair<int, int>>& new_vocab) {
+    std::vector<int> decoded = encoded; // Start with the encoded data
+
+    bool flag = true;
+    while (flag) {
+        flag = false; // Reset the flag
+        std::vector<int> temp; // Temporary vector to store decoded bytes
+
+        for (int byte : decoded) {
+            if (byte > 255) {
+                flag = true; // Set the flag if any byte needs decoding
+                temp.push_back(new_vocab.at(byte).first);
+                temp.push_back(new_vocab.at(byte).second);
+            } else {
+                temp.push_back(byte); // Keep bytes < 256 unchanged
+            }
+        }
+
+        decoded = temp; // Update the decoded data for the next iteration
+    }
+
+    return decoded;
+}
+
 
 int main() {
     std:: string input;
@@ -81,12 +107,20 @@ int main() {
     std:: cin >> new_vocab_size;
 
     int n_merges = new_vocab_size - 256;
-    std:: map<int,std:: map<int,int> > new_vocab = BPE(compressed,n_merges);
+    std:: map<int,std:: pair<int,int> > new_vocab = BPE(compressed,n_merges);
 
-    for(int byte : compressed){
-        std:: cout << byte << " ";
+    // for(int byte : compressed){
+    //     std:: cout << byte << " ";
+    // }
+    // std:: cout<< std::endl;
+    for (auto it = new_vocab.begin(); it != new_vocab.end(); ++it) {
+    int a = it->first;
+    std::pair<int, int> b = it->second;
+    std::cout << a << ": " << b.first << " " << b.second << std::endl;
     }
-    std:: cout<< std::endl;
-
+    
+    if(utf8Bytes == decode(compressed,new_vocab)){
+        std:: cout<<"oh yesss";
+    }
     return 0;
 }
