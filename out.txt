@@ -1,0 +1,2 @@
+Enter a string: UTF-8 Encoded Bytes: 56 
+8
