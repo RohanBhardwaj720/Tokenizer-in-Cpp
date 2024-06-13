@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <map>
@@ -9,43 +10,55 @@
 #include "decoder.h"
 
 int main() {
-    std:: string input;
-    
-    std:: cout << "Enter a string: ";
-    std:: getline(std::cin, input);
-    
-    std:: vector<int> utf8Bytes = convertToUtf8Bytes(input);
+    std::ifstream inputFile("in.txt");
+    std::ofstream outputFile("out.txt");
 
-    std:: cout << "UTF-8 Encoded Bytes: ";
-    for (size_t i = 0; i < utf8Bytes.size(); ++i) {
-        std::cout << utf8Bytes[i]<<" ";
+    if (!inputFile.is_open() || !outputFile.is_open()) {
+        std::cerr << "Error opening file" << std::endl;
+        return 1;
     }
-    std:: cout<< std::endl;
-    std:: cout<<convertBytesToString(utf8Bytes);
-    std:: cout<< std::endl;
+
+    std::string input;
+    
+    outputFile << "Enter a string: ";
+    std::getline(inputFile, input);
+    
+    std::vector<int> utf8Bytes = convertToUtf8Bytes(input);
+
+    outputFile << "UTF-8 Encoded Bytes: ";
+    for (size_t i = 0; i < utf8Bytes.size(); ++i) {
+        outputFile << utf8Bytes[i] << " ";
+    }
+    outputFile << std::endl;
+    outputFile << convertBytesToString(utf8Bytes);
+    outputFile << std::endl;
 
     // To store the compressed form of expression after merges
-    std:: vector<int> compressed = utf8Bytes;
+    std::vector<int> compressed = utf8Bytes;
     
     int new_vocab_size;
-    std:: cout << "Enter new vocab size: ";
-    std:: cin >> new_vocab_size;
+    outputFile << "Enter new vocab size: ";
+    inputFile >> new_vocab_size;
 
     int n_merges = new_vocab_size - 256;
-    std:: map<int,std:: pair<int,int> > new_vocab = encoder(compressed,n_merges);
+    std::map<int, std::pair<int, int>> new_vocab = encoder(compressed, n_merges);
 
-    // for(int byte : compressed){
-    //     std:: cout << byte << " ";
+    // for (int byte : compressed) {
+    //     outputFile << byte << " ";
     // }
-    // std:: cout<< std::endl;
+    // outputFile << std::endl;
     for (auto it = new_vocab.begin(); it != new_vocab.end(); ++it) {
-    int a = it->first;
-    std::pair<int, int> b = it->second;
-    std::cout << a << ": " << b.first << " " << b.second << std::endl;
+        int a = it->first;
+        std::pair<int, int> b = it->second;
+        outputFile << a << ": " << b.first << " " << b.second << std::endl;
     }
     
-    if(utf8Bytes == decoder(compressed,new_vocab)){
-        std:: cout<<"oh yesss";
+    if (utf8Bytes == decoder(compressed, new_vocab)) {
+        outputFile << "passed";
     }
+
+    inputFile.close();
+    outputFile.close();
+
     return 0;
 }
