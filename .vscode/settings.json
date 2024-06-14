@@ -51,6 +51,9 @@
         "unordered_map": "cpp",
         "variant": "cpp",
         "algorithm": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "deque": "cpp",
+        "iomanip": "cpp",
+        "regex": "cpp"
     }
 }
