@@ -20,7 +20,7 @@ int main() {
 
     std::string input;
     
-    outputFile << "Enter a string: ";
+    // input string
     std::getline(inputFile, input);
     
     std::vector<int> utf8Bytes = convertToUtf8Bytes(input);
@@ -37,26 +37,27 @@ int main() {
     std::vector<int> compressed = utf8Bytes;
     
     int new_vocab_size;
-    outputFile << "Enter new vocab size: ";
+    // input new vocab size>=256
     inputFile >> new_vocab_size;
 
     int n_merges = new_vocab_size - 256;
-    std::map<int, std::pair<int, int>> new_vocab = encoder(compressed, n_merges);
-
-    // for (int byte : compressed) {
-    //     outputFile << byte << " ";
-    // }
-    // outputFile << std::endl;
-    for (auto it = new_vocab.begin(); it != new_vocab.end(); ++it) {
-        int a = it->first;
-        std::pair<int, int> b = it->second;
-        outputFile << a << ": " << b.first << " " << b.second << std::endl;
-    }
     
-    if (utf8Bytes == decoder(compressed, new_vocab)) {
-        outputFile << "passed";
-    }
 
+    // std::map<int, std::pair<int, int>> new_vocab = encoder(compressed, n_merges);
+
+    // for (auto it = new_vocab.begin(); it != new_vocab.end(); ++it) {
+    //     int a = it->first;
+    //     std::pair<int, int> b = it->second;
+    //     outputFile << a << ": " << b.first << " " << b.second << std::endl;
+    // }
+    
+    // if (utf8Bytes == decoder(compressed, new_vocab)) {
+    //     outputFile << "passed";
+    // }
+    std::vector<std::string> tokens = patternParser(input);
+    for (const auto& token : tokens) {
+        std::cout << "Token: '" << token <<"'"<< std::endl;
+    }
     inputFile.close();
     outputFile.close();
 
