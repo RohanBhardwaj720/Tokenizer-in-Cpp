@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <chrono>
 #include "./Utils/convertToUtf8Bytes.h"
 #include "./Utils/convertBytesToString.h"
 #include "./Utils/patternParser.h"
@@ -10,6 +11,9 @@
 #include "./Utils/decoder.h"
 
 int main() {
+    // Start timing
+    auto start = std::chrono::high_resolution_clock::now();
+
     std::ifstream inputFile("./io_streams/in.txt");
     std::ofstream outputFile("./io_streams/out.txt");
 
@@ -89,6 +93,13 @@ int main() {
 
     inputFile.close();
     outputFile.close();
+
+    // End timing
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+
+    // Print the duration
+    std:: cout << "Execution time: " << duration.count() << " seconds" << std::endl;
 
     return 0;
 }
