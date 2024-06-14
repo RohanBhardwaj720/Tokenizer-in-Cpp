@@ -3,15 +3,15 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "convertToUtf8Bytes.h"
-#include "convertBytesToString.h"
-#include "patternParser.h"
-#include "encoder.h"
-#include "decoder.h"
+#include "./Utils/convertToUtf8Bytes.h"
+#include "./Utils/convertBytesToString.h"
+#include "./Utils/patternParser.h"
+#include "./Utils/encoder.h"
+#include "./Utils/decoder.h"
 
 int main() {
-    std::ifstream inputFile("in.txt");
-    std::ofstream outputFile("out.txt");
+    std::ifstream inputFile("./io_streams/in.txt");
+    std::ofstream outputFile("./io_streams/out.txt");
 
     if (!inputFile.is_open() || !outputFile.is_open()) {
         std::cerr << "Error opening file" << std::endl;
