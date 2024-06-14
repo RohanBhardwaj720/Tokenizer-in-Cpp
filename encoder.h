@@ -31,7 +31,7 @@ std::map<int, std::pair<int, int>> encoder(std::vector< std:: vector<int> > &com
         merges[val] = std::make_pair(max_pair.first, max_pair.second);
 
         // Update the compressed vector with merged pairs
-        std::vector< std:: vector<int> > temp;
+        std::vector< std:: vector<int> > temp( compressed.size() );
 
         for(int j = 0; j<compressed.size(); j++){
             for (int i = 0; i < compressed[j].size();) {

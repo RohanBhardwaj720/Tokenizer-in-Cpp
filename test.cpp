@@ -27,57 +27,64 @@ int main() {
     std::vector<std::string> splitted_string = patternParser(input);
 
     // UTF-8 conversion
-    std::vector<std:: vector<int> > utf8Bytes;
+    std::vector<std::vector<int>> utf8Bytes;
     std::vector<int> temp;
 
-    for(int i=0; i< splitted_string.size();i++){
+    for (int i = 0; i < splitted_string.size(); ++i) {
         temp = convertToUtf8Bytes(splitted_string[i]);
         utf8Bytes.push_back(temp);
     }
 
-    outputFile << "UTF-8 Expression of Splitted String: " << std:: endl;
+    outputFile << "UTF-8 Expression of Splitted String: " << std::endl;
     for (int i = 0; i < utf8Bytes.size(); ++i) {
-
         outputFile << "'" << splitted_string[i] << "' : ";
-        for(int j=0; j< utf8Bytes[i].size(); ++j){
-            outputFile << utf8Bytes[i][j] <<" ";
+        for (int j = 0; j < utf8Bytes[i].size(); ++j) {
+            outputFile << utf8Bytes[i][j] << " ";
         }
-        outputFile << std:: endl;
+        outputFile << std::endl;
     }
+    outputFile << std::endl;
 
     int new_vocab_size;
     // input new vocab size >= 256
     inputFile >> new_vocab_size;
     int n_merges = new_vocab_size - 256;
 
-
-
     // To store the compressed form of expression after merges
-    std::vector<std::string> compressed_splitted_string = splitted_string;
+    std::vector<std::vector<int>> compressed = utf8Bytes;
 
-    std::map<int, std::pair<int, int>> new_vocab = encoder(compressed_splitted_string, n_merges);
+    std::map<int, std::pair<int, int>> new_vocab = encoder(compressed, n_merges);
 
+    outputFile << "Merges:" << std::endl;
     for (auto it = new_vocab.begin(); it != new_vocab.end(); ++it) {
         int a = it->first;
         std::pair<int, int> b = it->second;
         outputFile << a << ": " << b.first << " " << b.second << std::endl;
     }
-    
-    if (utf8Bytes == decoder(compressed_splitted_string, new_vocab)) {
+    outputFile << std::endl;
+
+    if (utf8Bytes == decoder(compressed, new_vocab)) {
         outputFile << "passed" << std::endl;
     }
-    
+    outputFile << std::endl;
+
+    // Calculate final length
     int final_len = 0;
-    for(int i = 0; i < compressed_splitted_string.size(); i++){
-        final_len += compressed_splitted_string[i].size();
+    for (int i = 0; i < compressed.size(); ++i) {
+        final_len += compressed[i].size();
     }
 
-    int initial_len;
-    for(int i = 0; i < utf8Bytes.size(); i++){
+    // Calculate initial length
+    int initial_len = 0;
+    for (int i = 0; i < utf8Bytes.size(); ++i) {
         initial_len += utf8Bytes[i].size();
-    }    
+    }
 
-    float compression_ratio = initial_len/(float)final_len;
+    outputFile << "Initial Length: " << initial_len << std::endl;
+    outputFile << "Final Length: " << final_len << std::endl;
+
+    // Calculate and print compression ratio
+    float compression_ratio = static_cast<float>(initial_len) / final_len;
     outputFile << "Compression Ratio: " << compression_ratio << std::endl;
 
     inputFile.close();
