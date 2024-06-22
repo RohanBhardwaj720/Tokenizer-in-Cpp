@@ -22,7 +22,13 @@ The Byte Pair Encoding algorithm works by iteratively merging the most frequent 
 
 As this is a C++ implementation, it takes significantly less time to run compared to the original Python version 🕐.
 
-![Training Time](/assests/screenshot.png)
+![Training Time](/assets/time.png)
+
+Above Execution Time is for the following input:
+```bash
+Ｕｎｉｃｏｄｅ! 🅤🅝🅘🅒🅞🅓🅔‽ 🇺‌🇳‌🇮‌🇨‌🇴‌🇩‌🇪! 😄 The very name strikes fear and awe into the hearts of programmers worldwide. We all know we ought to “support Unicode” in our software (whatever that means—like using wchar_t for all the strings, right?). But Unicode can be abstruse, and diving into the thousand-page Unicode Standard plus its dozens of supplementary annexes, reports, and notes can be more than a little intimidating. I don’t blame programmers for still finding the whole thing mysterious, even 30 years after Unicode’s inception.
+500
+```
 
 *Note: Actual performance may vary depending on your system and the size of the input data.*
 
@@ -32,4 +38,20 @@ To compile the project, you'll need a C++ compiler that supports C++11 or later.
 
 ```bash
 g++ -std=c++11 -o program main.cpp -I$(brew --prefix icu4c)/include -I$(brew --prefix pcre2)/include -L$(brew --prefix icu4c)/lib -L$(brew --prefix pcre2)/lib -licuuc -licudata -lpcre2-8
+```
+After successfully compiling the project, you can run the program using:
+
+```bash
+./program
+```
+
+When running the program, provide input in the following format:
+
+1. First line: Input string
+2. Second line: Size of new vocabulary (must be ≥ 256)
+
+Example:
+```bash
+Hello, World!
+258
 ```

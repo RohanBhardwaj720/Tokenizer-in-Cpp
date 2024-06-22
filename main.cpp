@@ -4,11 +4,11 @@
 #include <vector>
 #include <map>
 #include <chrono>
-#include "./Utils/convertToUtf8Bytes.h"
-#include "./Utils/convertBytesToString.h"
-#include "./Utils/patternParser.h"
-#include "./Utils/encoder.h"
-#include "./Utils/decoder.h"
+#include "./utils/convertToUtf8Bytes.h"
+#include "./utils/convertBytesToString.h"
+#include "./utils/patternParser.h"
+#include "./utils/encoder.h"
+#include "./utils/decoder.h"
 
 int main() {
     // Start timing
