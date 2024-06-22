@@ -9,7 +9,7 @@
 #include "./utils/patternParser.h"
 #include "./utils/encoder.h"
 #include "./utils/decoder.h"
-
+//
 int main() {
     // Start timing
     auto start = std::chrono::high_resolution_clock::now();
