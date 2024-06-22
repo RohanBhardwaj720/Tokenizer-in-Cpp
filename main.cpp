@@ -4,12 +4,12 @@
 #include <vector>
 #include <map>
 #include <chrono>
-#include "./utils/convertToUtf8Bytes.h"
-#include "./utils/convertBytesToString.h"
-#include "./utils/patternParser.h"
-#include "./utils/encoder.h"
-#include "./utils/decoder.h"
-//
+#include "./util/convertToUtf8Bytes.h"
+#include "./util/convertBytesToString.h"
+#include "./util/patternParser.h"
+#include "./util/encoder.h"
+#include "./util/decoder.h"
+
 int main() {
     // Start timing
     auto start = std::chrono::high_resolution_clock::now();
